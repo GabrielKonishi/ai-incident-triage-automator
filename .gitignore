@@ -1,0 +1,16 @@
+# Clasp configuration files
+.clasp.json
+
+# Dependencies
+/node_modules
+
+# Build artifacts and temporary files
+/dist
+/build
+*.swp
+
+# Environment-specific or IDE files
+.vscode
+.idea
+*.log
+.DS_Store
