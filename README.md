@@ -19,7 +19,7 @@ The solution is built on a decoupled architecture to ensure flexibility and ease
 
 ## 🚧 Future Roadmap
 This project is in continuous evolution. Planned updates include:
-* **Automated Triggers:** Implementing `onEdit` triggers for real-time analysis without manual clicks.
+* ~~**Logging System:** Implement monitoring via log entries in a dedicated "Log" sheet with timestamps, levels (INFO/WARN/ERROR), function names, messages, and payloads.~~ ✅
 * **Notification System:** Integrating Email or Telegram alerts for high-priority incidents.
 * **Analytics Dashboard:** A dedicated Google Sheets tab for statistical visualization of incident trends.
   
