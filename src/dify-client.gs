@@ -1,15 +1,15 @@
 /**
- * Cliente para a API Dify (workflow).
- * Responsabilidade: montar requisição, chamar o workflow e interpretar a resposta.
+ * Client for the Dify API (workflow).
+ * Builds the request, calls the workflow and parses the response.
  */
 
 /**
- * Executa o workflow no Dify com o problema informado.
- * @param {string} problem - Descrição do problema/incidente
- * @param {string} apiKey - API key do Dify
- * @param {string} apiUrl - URL do endpoint do workflow (ex.: https://api.dify.ai/v1/workflows/run)
- * @returns {string} Texto retornado pelo workflow (output "text")
- * @throws {Error} Em caso de falha de rede ou resposta inválida
+ * Runs the Dify workflow with the given problem.
+ * @param {string} problem - Problem/incident description
+ * @param {string} apiKey - Dify API key
+ * @param {string} apiUrl - Workflow endpoint URL (e.g. https://api.dify.ai/v1/workflows/run)
+ * @returns {string} Text returned by the workflow (output "text")
+ * @throws {Error} On network failure or invalid response
  */
 function runDifyWorkflow(problem, apiKey, apiUrl) {
   const options = {

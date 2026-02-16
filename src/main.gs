@@ -1,31 +1,31 @@
 /**
- * Ponto de entrada principal – orquestração da análise de incidentes.
- * Responsabilidade: coordenar planilha, config, Dify e escrita dos resultados.
+ * Main entry point – orchestrates incident analysis.
+ * Coordinates spreadsheet, config, Dify API and result writing.
  */
 
-/** Intervalo em ms entre chamadas ao Dify (evitar rate limit). */
+/** Delay in ms between Dify API calls (avoid rate limit). */
 const DELAY_BETWEEN_CALLS_MS = 500;
 
 /**
- * Analisa todos os incidentes da coluna A na aba "Incidents":
- * para cada problema chama o workflow Dify e grava o resultado na coluna B.
+ * Analyzes all incidents in column A of the "Incidents" sheet:
+ * for each problem calls the Dify workflow and writes the result to column B.
  */
-function analiseAllIncidents() {
+function analyzeAllIncidents() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const tab = getIncidentsSheet(ss);
-  if (!tab) {
-    registrarLog("ERROR", "analiseAllIncidents", "Sheet 'Incidents' not found. Create a sheet with that name.", {
+  const sheet = getIncidentsSheet(ss);
+  if (!sheet) {
+    registerLog("ERROR", "analyzeAllIncidents", "Sheet 'Incidents' not found. Create a sheet with that name.", {
       expectedSheet: "Incidents"
     });
     return;
   }
-  const { problems } = getProblemsFromSheet(tab);
+  const { problems } = getProblemsFromSheet(sheet);
   if (problems.length === 0) {
-    registrarLog("INFO", "analiseAllIncidents", "No incidents to analyze");
+    registerLog("INFO", "analyzeAllIncidents", "No incidents to analyze");
     return;
   }
 
-  registrarLog("INFO", "analiseAllIncidents", "Analysis started", {
+  registerLog("INFO", "analyzeAllIncidents", "Analysis started", {
     sheet: INCIDENTS_SHEET_NAME,
     total: problems.length
   });
@@ -40,12 +40,12 @@ function analiseAllIncidents() {
 
     try {
       const result = runDifyWorkflow(problem, apiKey, apiUrl);
-      writeResultToSheet(tab, rowIndex, result);
-      registrarLog("INFO", "analiseAllIncidents", "Row " + rowIndex + " analyzed", { rowIndex });
+      writeResultToSheet(sheet, rowIndex, result);
+      registerLog("INFO", "analyzeAllIncidents", "Row " + rowIndex + " analyzed", { rowIndex });
     } catch (e) {
       errors++;
-      writeResultToSheet(tab, rowIndex, "Connection error: " + e.toString());
-      registrarLog("ERROR", "analiseAllIncidents", "Error analyzing row " + rowIndex, {
+      writeResultToSheet(sheet, rowIndex, "Connection error: " + e.toString());
+      registerLog("ERROR", "analyzeAllIncidents", "Error analyzing row " + rowIndex, {
         rowIndex,
         error: e.toString()
       });
@@ -54,7 +54,7 @@ function analiseAllIncidents() {
     Utilities.sleep(DELAY_BETWEEN_CALLS_MS);
   }
 
-  registrarLog("INFO", "analiseAllIncidents", "Analysis completed", {
+  registerLog("INFO", "analyzeAllIncidents", "Analysis completed", {
     processed: problems.length,
     errors
   });

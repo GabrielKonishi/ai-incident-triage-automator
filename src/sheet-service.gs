@@ -1,31 +1,30 @@
 /**
- * Serviço de leitura e escrita na planilha de incidentes.
- * Responsabilidade: obter dados da aba "Incidents" e escrever resultados nas células.
+ * Read/write service for the incidents spreadsheet.
+ * Reads from the "Incidents" sheet and writes results to cells.
  */
 
-/** Nome da aba onde ficam os incidentes (coluna A = problema, coluna B = resultado). */
+/** Name of the sheet for incidents (column A = problem, column B = result). */
 const INCIDENTS_SHEET_NAME = "Incidents";
 
 /**
- * Retorna a aba de incidentes pela nome. Não cria a aba se não existir.
- * @param {GoogleAppsScript.Spreadsheet.Spreadsheet} spreadsheet - Planilha ativa
- * @returns {GoogleAppsScript.Spreadsheet.Sheet|null} Aba "Incidents" ou null
+ * Returns the incidents sheet by name. Does not create it if missing.
+ * @param {GoogleAppsScript.Spreadsheet.Spreadsheet} spreadsheet - Active spreadsheet
+ * @returns {GoogleAppsScript.Spreadsheet.Sheet|null} "Incidents" sheet or null
  */
 function getIncidentsSheet(spreadsheet) {
   return spreadsheet.getSheetByName(INCIDENTS_SHEET_NAME);
 }
 
 /**
- * Obtém a lista de problemas (coluna A) a partir da linha 2 até a penúltima linha.
- * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Aba Incidents
- * @returns {{ problems: string[][], lastRow: number }} Valores da coluna e última linha
+ * Gets the list of problems (column A) from row 2 to the second-to-last row.
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Incidents sheet
+ * @returns {{ problems: string[][], lastRow: number }} Column values and last row number
  */
 function getProblemsFromSheet(sheet) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) {
     return { problems: [], lastRow };
   }
-  // Lê da linha 2 até a penúltima (original excluía a última). Se lastRow === 2, lê só a linha 2.
   const endRow = lastRow === 2 ? 2 : lastRow - 1;
   const range = sheet.getRange(2, 1, endRow, 1);
   const data = range.getValues();
@@ -33,11 +32,16 @@ function getProblemsFromSheet(sheet) {
 }
 
 /**
- * Escreve o resultado (ou mensagem de erro) na coluna B da linha indicada.
- * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Aba Incidents
- * @param {number} rowIndex - Índice da linha (1-based, considerando cabeçalho)
- * @param {string} value - Texto a gravar
+ * Writes the result (or error message) to column B at the given row.
+ * Trims leading/trailing line breaks and sets vertical alignment to top for columns A and B.
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Incidents sheet
+ * @param {number} rowIndex - Row index (1-based, header is row 1)
+ * @param {string} value - Text to write
  */
 function writeResultToSheet(sheet, rowIndex, value) {
-  sheet.getRange(rowIndex, 2).setValue(value);
+  const trimmed = (value || "").toString().trim();
+  const rangeB = sheet.getRange(rowIndex, 2);
+  rangeB.setValue(trimmed);
+  const rangeAandB = sheet.getRange(rowIndex, 1, rowIndex, 2);
+  rangeAandB.setVerticalAlignment("top");
 }

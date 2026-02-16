@@ -1,17 +1,17 @@
 /**
- * Configurações e constantes da aplicação.
- * Responsabilidade: centralizar chaves, URLs e parâmetros.
+ * Application configuration and constants.
+ * Centralizes API keys, URLs and parameters.
  */
 
 const DIFY = {
   USER_ID: "comando-team",
   RESPONSE_MODE: "blocking",
-  /** URL padrão quando DIFY_API_URL não está nas Script Properties */
+  /** Default URL when DIFY_API_URL is not set in Script Properties */
   DEFAULT_WORKFLOW_URL: "https://api.dify.ai/v1/workflows/run"
 };
 
 /**
- * Obtém a API key do Dify das propriedades do script.
+ * Returns the Dify API key from script properties.
  * @returns {string} API key
  */
 function getDifyApiKey() {
@@ -19,9 +19,9 @@ function getDifyApiKey() {
 }
 
 /**
- * Obtém a URL do endpoint do workflow Dify das propriedades do script.
- * Se DIFY_API_URL não estiver definida, usa a URL padrão do Dify.
- * @returns {string} URL da API
+ * Returns the Dify workflow endpoint URL from script properties.
+ * Falls back to default Dify URL if DIFY_API_URL is not set.
+ * @returns {string} API URL
  */
 function getDifyApiUrl() {
   const url = PropertiesService.getScriptProperties().getProperty('DIFY_API_URL');

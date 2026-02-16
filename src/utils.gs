@@ -1,12 +1,12 @@
 /**
- * Monitoramento via log na aba "Log".
- * Responsabilidade: criar a aba Log (se não existir) e registrar entradas.
+ * Logging via the "Log" sheet.
+ * Creates the Log sheet if missing and appends log entries.
  */
 
 const LOG_SHEET_NAME = "Log";
 
 /**
- * Retorna a aba de log, criando-a se não existir.
+ * Returns the log sheet, creating it if it does not exist.
  * @returns {GoogleAppsScript.Spreadsheet.Sheet}
  */
 function getLogSheet() {
@@ -19,7 +19,7 @@ function getLogSheet() {
 }
 
 /**
- * Cria a aba "Log" com cabeçalhos e formatação.
+ * Creates the "Log" sheet with headers and formatting.
  * @returns {GoogleAppsScript.Spreadsheet.Sheet}
  */
 function createLogSheet() {
@@ -31,15 +31,15 @@ function createLogSheet() {
 }
 
 /**
- * Registra uma linha de log na aba "Log".
- * @param {string} level - Nível: "INFO", "WARN", "ERROR"
- * @param {string} func - Nome da função que gerou o log
- * @param {string} message - Mensagem
- * @param {string|object} [payload=""] - Dados extras (objeto é convertido para JSON)
+ * Appends a log row to the "Log" sheet.
+ * @param {string} level - Level: "INFO", "WARN", "ERROR"
+ * @param {string} funcName - Name of the function that produced the log
+ * @param {string} message - Message
+ * @param {string|object} [payload=""] - Extra data (object is stringified to JSON)
  */
-function registrarLog(level, func, message, payload = "") {
+function registerLog(level, funcName, message, payload = "") {
   const sheet = getLogSheet();
   const now = new Date();
   const payloadString = typeof payload === "object" ? JSON.stringify(payload, null, 2) : payload;
-  sheet.appendRow([now, level, func, message, payloadString]);
+  sheet.appendRow([now, level, funcName, message, payloadString]);
 }
