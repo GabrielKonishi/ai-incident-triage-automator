@@ -28,10 +28,6 @@ function analiseAllIncidents() {
       let json = JSON.parse(responseText);
       let result = json.data.outputs.text;
       tab.getRange(i + 2, 2).setValue(result);
-
-      if (result.toUpperCase().includes("ALTA")) {
-        tab.getRange(i + 2, 2).setBackground("#FFCCCC").setFontColor("#FF0000").setFontWeight("bold");
-      }
     } catch (e) {
       tab.getRange(i + 2, 2).setValue("Connection error: " + e.toString());
     }
