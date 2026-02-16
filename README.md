@@ -25,6 +25,9 @@ This project is in continuous evolution. Planned updates include:
   
 ## 🚀 Setup & Deployment
 1. **Workflow Setup:** Export the dify_workflow.yml and import it into your Dify workspace.
+  * Import the `incident_triage_workflow.yml` file into your [Dify.ai](https://dify.ai) account.
+  * Publish the workflow and copy your **API Key**.
+  * Add the API Key to your Google Apps Script "Script Properties".
 2. **App Script Configuration:**
   * Navigate to Extensions > Apps Script in your Google Sheet.
   * Deploy the provided script.gs code.
