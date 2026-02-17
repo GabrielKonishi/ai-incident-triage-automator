@@ -19,23 +19,28 @@ function analyzeAllIncidents() {
     });
     return;
   }
-  const { problems } = getProblemsFromSheet(sheet);
-  if (problems.length === 0) {
+  const { problems: incidentDescriptions } = getProblemsFromSheet(sheet);
+  if (incidentDescriptions.length === 0) {
     registerLog("INFO", "analyzeAllIncidents", "No incidents to analyze");
     return;
   }
 
   registerLog("INFO", "analyzeAllIncidents", "Analysis started", {
     sheet: INCIDENTS_SHEET_NAME,
-    total: problems.length
+    total: incidentDescriptions.length
   });
 
   const apiKey = getDifyApiKey();
   const apiUrl = getDifyApiUrl();
+  if (!apiKey) {
+    registerLog("ERROR", "analyzeAllIncidents", "DIFY_API_KEY is not set in Script Properties.");
+    return;
+  }
+
   let errors = 0;
 
-  for (let i = 0; i < problems.length; i++) {
-    const problem = problems[i][0];
+  for (let i = 0; i < incidentDescriptions.length; i++) {
+    const problem = incidentDescriptions[i][0];
     const rowIndex = i + 2;
 
     try {
@@ -55,7 +60,7 @@ function analyzeAllIncidents() {
   }
 
   registerLog("INFO", "analyzeAllIncidents", "Analysis completed", {
-    processed: problems.length,
+    processed: incidentDescriptions.length,
     errors
   });
 }

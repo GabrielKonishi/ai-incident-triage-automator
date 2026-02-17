@@ -5,6 +5,10 @@
 
 /** Name of the sheet for incidents (column A = problem, column B = result). */
 const INCIDENTS_SHEET_NAME = "Incidents";
+const INCIDENT_DESCRIPTION_COLUMN = 1;
+const INCIDENT_RESULT_COLUMN = 2;
+const HEADER_ROW = 1;
+const FIRST_DATA_ROW = HEADER_ROW + 1;
 
 /**
  * Returns the incidents sheet by name. Does not create it if missing.
@@ -22,11 +26,17 @@ function getIncidentsSheet(spreadsheet) {
  */
 function getProblemsFromSheet(sheet) {
   const lastRow = sheet.getLastRow();
-  if (lastRow < 2) {
+  if (lastRow < FIRST_DATA_ROW) {
     return { problems: [], lastRow };
   }
-  const endRow = lastRow === 2 ? 2 : lastRow - 1;
-  const range = sheet.getRange(2, 1, endRow, 1);
+  // Keep legacy behavior: read until the second-to-last row.
+  // If there's only one data row (lastRow === 2), read that single row.
+  const lastDataRow = lastRow === FIRST_DATA_ROW ? FIRST_DATA_ROW : lastRow - 1;
+  if (lastDataRow < FIRST_DATA_ROW) {
+    return { problems: [], lastRow };
+  }
+  const numRows = lastDataRow - FIRST_DATA_ROW + 1;
+  const range = sheet.getRange(FIRST_DATA_ROW, INCIDENT_DESCRIPTION_COLUMN, numRows, 1);
   const data = range.getValues();
   return { problems: data, lastRow };
 }
@@ -40,8 +50,10 @@ function getProblemsFromSheet(sheet) {
  */
 function writeResultToSheet(sheet, rowIndex, value) {
   const trimmed = (value || "").toString().trim();
-  const rangeB = sheet.getRange(rowIndex, 2);
+  const rangeB = sheet.getRange(rowIndex, INCIDENT_RESULT_COLUMN);
   rangeB.setValue(trimmed);
-  const rangeAandB = sheet.getRange(rowIndex, 1, rowIndex, 2);
-  rangeAandB.setVerticalAlignment("top");
+  // Keep both the incident description (A) and AI response (B) top-aligned for this row.
+  sheet
+    .getRange(rowIndex, INCIDENT_DESCRIPTION_COLUMN, 1, 2)
+    .setVerticalAlignment("top");
 }

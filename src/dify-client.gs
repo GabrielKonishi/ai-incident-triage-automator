@@ -12,6 +12,13 @@
  * @throws {Error} On network failure or invalid response
  */
 function runDifyWorkflow(problem, apiKey, apiUrl) {
+  if (!apiUrl) {
+    throw new Error("Dify API URL is empty.");
+  }
+  if (!apiKey) {
+    throw new Error("Dify API key is empty.");
+  }
+
   const options = {
     method: "post",
     contentType: "application/json",
@@ -26,5 +33,9 @@ function runDifyWorkflow(problem, apiKey, apiUrl) {
   const response = UrlFetchApp.fetch(apiUrl, options);
   const responseText = response.getContentText();
   const json = JSON.parse(responseText);
-  return json.data.outputs.text;
+  const text = json && json.data && json.data.outputs ? json.data.outputs.text : undefined;
+  if (typeof text !== "string") {
+    throw new Error("Unexpected Dify response format: missing data.outputs.text");
+  }
+  return text;
 }
