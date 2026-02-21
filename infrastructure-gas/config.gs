@@ -11,6 +11,11 @@ const DIFY = {
 };
 
 /**
+ * Python backend API endpoint for Gmail incidents.
+ */
+const API_ENDPOINT = 'https://nixon-ungabled-subaggregately.ngrok-free.dev/analyze';
+
+/**
  * Returns the Dify API key from script properties.
  * @returns {string} API key
  */

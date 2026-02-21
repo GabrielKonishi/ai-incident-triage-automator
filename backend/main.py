@@ -7,8 +7,8 @@ from functools import lru_cache
 import httpx
 from fastapi import FastAPI, HTTPException
 
-from app.models import IncidentInput, IncidentResponse
-from app.services import IncidentAnalysisService, build_incident_analysis_service
+from backend.models import IncidentInput, IncidentResponse
+from backend.services import IncidentAnalysisService, build_incident_analysis_service
 
 app = FastAPI()
 logger = logging.getLogger(__name__)
@@ -24,7 +24,9 @@ def get_analysis_service() -> IncidentAnalysisService:
 async def analyze_incident(incident: IncidentInput):
     try:
         service = get_analysis_service()
-        return await service.analyze(incident.description)
+        result = await service.analyze(incident.description)
+        print(f"DEBUG BACKEND - Resposta enviada ao GAS: {result.model_dump()}")
+        return result
     except httpx.HTTPStatusError as e:
         logger.exception("Dify returned an HTTP error")
         raise HTTPException(status_code=502, detail="Upstream Dify error") from e

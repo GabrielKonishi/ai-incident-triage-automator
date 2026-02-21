@@ -4,7 +4,7 @@
  */
 
 /** Delay in ms between Dify API calls (avoid rate limit). */
-const DELAY_BETWEEN_CALLS_MS = 500;
+const DELAY_BETWEEN_CALLS_MS = 2000;
 
 /**
  * Analyzes all incidents in column A of the "Incidents" sheet:
@@ -30,27 +30,34 @@ function analyzeAllIncidents() {
     total: incidentDescriptions.length
   });
 
-  const apiKey = getDifyApiKey();
-  const apiUrl = getDifyApiUrl();
-  if (!apiKey) {
-    registerLog("ERROR", "analyzeAllIncidents", "DIFY_API_KEY is not set in Script Properties.");
-    return;
-  }
-
   let errors = 0;
 
   for (let i = 0; i < incidentDescriptions.length; i++) {
-    const problem = incidentDescriptions[i][0];
+    const description = incidentDescriptions[i][0];
     const rowIndex = i + 2;
 
     try {
-      const result = runDifyWorkflow(problem, apiKey, apiUrl);
-      writeResultToSheet(sheet, rowIndex, result);
-      registerLog("INFO", "analyzeAllIncidents", "Row " + rowIndex + " analyzed", { rowIndex });
+      const payload = {
+        "description": description,
+        "reported_by": "Planilha_Manual",
+        "source": "GoogleSheets"
+      };
+
+      const apiResponse = callPythonBackend(payload);
+      
+      let resultText = "Erro na resposta da IA";
+      if (apiResponse && apiResponse.analysis_summary) {
+        resultText = "Summary: " + apiResponse.analysis_summary + "\n\nAction: " + apiResponse.immediate_action;
+      }
+
+      writeResultToSheet(sheet, rowIndex, resultText);
+      
+      registerLog("INFO", "analyzeAllIncidents", "Linha " + rowIndex + " analisada via Python", { rowIndex });
+
     } catch (e) {
       errors++;
-      writeResultToSheet(sheet, rowIndex, "Connection error: " + e.toString());
-      registerLog("ERROR", "analyzeAllIncidents", "Error analyzing row " + rowIndex, {
+      writeResultToSheet(sheet, rowIndex, "Erro de Conexão: " + e.toString());
+      registerLog("ERROR", "analyzeAllIncidents", "Erro ao analisar linha " + rowIndex, {
         rowIndex,
         error: e.toString()
       });

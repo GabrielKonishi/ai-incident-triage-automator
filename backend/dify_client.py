@@ -4,7 +4,7 @@ from typing import Any, Mapping
 
 import httpx
 
-from app.config import DifyConfig
+from backend.config import DifyConfig
 
 
 class DifyWorkflowClient:
@@ -29,7 +29,7 @@ class DifyWorkflowClient:
         }
 
         if self._client is None:
-            async with httpx.AsyncClient(timeout=30) as client:
+            async with httpx.AsyncClient(timeout=90) as client:
                 response = await client.post(self._config.workflow_url, json=payload, headers=headers)
         else:
             response = await self._client.post(self._config.workflow_url, json=payload, headers=headers)

@@ -31,13 +31,10 @@ function getProblemsFromSheet(sheet) {
   }
   // Keep legacy behavior: read until the second-to-last row.
   // If there's only one data row (lastRow === 2), read that single row.
-  const lastDataRow = lastRow === FIRST_DATA_ROW ? FIRST_DATA_ROW : lastRow - 1;
-  if (lastDataRow < FIRST_DATA_ROW) {
-    return { problems: [], lastRow };
-  }
-  const numRows = lastDataRow - FIRST_DATA_ROW + 1;
+  const numRows = lastRow - FIRST_DATA_ROW + 1;
   const range = sheet.getRange(FIRST_DATA_ROW, INCIDENT_DESCRIPTION_COLUMN, numRows, 1);
   const data = range.getValues();
+  
   return { problems: data, lastRow };
 }
 

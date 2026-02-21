@@ -3,7 +3,7 @@ from __future__ import annotations
 from enum import Enum
 
 from pydantic import BaseModel
-
+from typing import Optional
 
 class IncidentCategory(str, Enum):
     HARDWARE = "HARDWARE"
@@ -22,8 +22,10 @@ class IncidentUrgency(str, Enum):
 
 class IncidentInput(BaseModel):
     description: str
-    reported_by: str
-    source: str
+    reported_by: Optional[str] = "System"
+    source: Optional[str] = "Unknown"
+    incident_it: Optional[str] = None
+    priority: Optional[str] = IncidentUrgency.MEDIUM
 
 class IncidentResponse(BaseModel):
     status: str
