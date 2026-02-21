@@ -2,7 +2,9 @@
 .clasp.json
 
 # Dependencies
+.env
 /node_modules
+__pycache__/
 
 # Build artifacts and temporary files
 /dist
