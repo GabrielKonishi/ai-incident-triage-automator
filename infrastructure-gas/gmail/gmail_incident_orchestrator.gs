@@ -33,8 +33,10 @@ function processGmailIncidentFlow() {
     try {
       // Build JSON payload compatible with backend
       const payload = {
-        incident_id: incident.id,
         description: incident.body,
+        reported_by: "Gmail",
+        source: "Gmail",
+        incident_id: incident.id || "",
         priority: 'MEDIUM'
       };
 

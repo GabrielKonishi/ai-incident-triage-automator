@@ -20,8 +20,8 @@ The solution is built on a decoupled architecture to ensure flexibility and ease
 ## 🚧 Future Roadmap
 This project is in continuous evolution. Planned updates include:
 * ~~**Logging System:** Implement monitoring via log entries in a dedicated "Log" sheet with timestamps, levels (INFO/WARN/ERROR), function names, messages, and payloads.~~ ✅
-* ~~**Containerization:** Porting the backend to Docker to ensure environment parity and easy deployment.~~✅
-* **Email-to-Sheet Pipeline:** Automatic parsing of incident reports received via Gmail using Python IMAP/API listeners.
+* ~~**Containerization:** Porting the backend to Docker to ensure environment parity and easy deployment. ✅~~
+* ~~**Email-to-Sheet Pipeline:** Automatic parsing of incident reports received via Gmail using Python IMAP/API listeners. ✅~~
 * **Notification System:** Integrating Email or Telegram alerts for high-priority incidents.
 * **Analytics Dashboard:** A dedicated Google Sheets tab for statistical visualization of incident trends.
   

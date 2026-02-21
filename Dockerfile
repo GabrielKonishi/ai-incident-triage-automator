@@ -3,7 +3,7 @@ FROM python:3.14.3
 WORKDIR /app
 
 # Install dependencies first (better layer caching)
-COPY backend/requirements.txt /app/requirements.txt
+COPY /requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy application code

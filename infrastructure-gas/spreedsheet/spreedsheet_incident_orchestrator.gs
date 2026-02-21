@@ -38,10 +38,12 @@ function analyzeAllIncidents() {
 
     try {
       const payload = {
-        "description": description,
-        "reported_by": "Planilha_Manual",
-        "source": "GoogleSheets"
-      };
+        description: description,
+        reported_by: "Incident Spreedsheet",
+        source: "GoogleSheets",
+        incident_id: incident.id || "",
+        priority: 'MEDIUM'
+      }
 
       const apiResponse = callPythonBackend(payload);
       

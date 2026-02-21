@@ -24,7 +24,7 @@ class IncidentInput(BaseModel):
     description: str
     reported_by: Optional[str] = "System"
     source: Optional[str] = "Unknown"
-    incident_it: Optional[str] = None
+    incident_id: Optional[str] = None
     priority: Optional[str] = IncidentUrgency.MEDIUM
 
 class IncidentResponse(BaseModel):
