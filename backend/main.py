@@ -7,8 +7,8 @@ from functools import lru_cache
 import httpx
 from fastapi import FastAPI, HTTPException
 
-from backend.models import IncidentInput, IncidentResponse
-from backend.services import IncidentAnalysisService, build_incident_analysis_service
+from models import IncidentInput, IncidentResponse
+from services import IncidentAnalysisService, build_incident_analysis_service
 
 app = FastAPI()
 logger = logging.getLogger(__name__)

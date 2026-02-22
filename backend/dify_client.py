@@ -4,7 +4,7 @@ from typing import Any, Mapping
 
 import httpx
 
-from backend.config import DifyConfig
+from config import DifyConfig
 
 
 class DifyWorkflowClient:

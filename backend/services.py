@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from backend.config import load_dify_config
-from backend.dify_client import DifyWorkflowClient
-from backend.models import IncidentCategory, IncidentResponse, IncidentUrgency
+from config import load_dify_config
+from dify_client import DifyWorkflowClient
+from models import IncidentCategory, IncidentResponse, IncidentUrgency
 
 
 def _first_present(outputs: dict[str, Any], *keys: str, default: Any = None) -> Any:
