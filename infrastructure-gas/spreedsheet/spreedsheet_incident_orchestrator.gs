@@ -41,7 +41,7 @@ function analyzeAllIncidents() {
         description: description,
         reported_by: "Incident Spreedsheet",
         source: "GoogleSheets",
-        incident_id: incident_id || "",
+        incident_id: "ROW-" + rowIndex,
         priority: 'MEDIUM'
       }
 
@@ -49,7 +49,7 @@ function analyzeAllIncidents() {
       
       let resultText = "Erro na resposta da IA";
       if (apiResponse && apiResponse.analysis_summary) {
-        resultText = "Incident ID: " + apiResponse.incident_id +"Summary: " + apiResponse.analysis_summary + "\nUrgency: " + apiResponse.urgency + "\nAction: " + apiResponse.immediate_action;
+        resultText = "Summary: " + apiResponse.analysis_summary + "\nUrgency: " + apiResponse.urgency + "\nAction: " + apiResponse.immediate_action;
       }
 
       writeResultToSheet(sheet, rowIndex, resultText);
