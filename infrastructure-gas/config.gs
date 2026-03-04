@@ -1,34 +1,26 @@
 /**
- * Application configuration and constants.
- * Centralizes API keys, URLs and parameters.
+ * Application configuration.
+ * Centralizes the connection logic with the Python Backend.
  */
 
-const DIFY = {
-  USER_ID: "comando-team",
-  RESPONSE_MODE: "blocking",
-  /** Default URL when DIFY_API_URL is not set in Script Properties */
-  DEFAULT_WORKFLOW_URL: "https://api.dify.ai/v1/workflows/run"
-};
-
-/**
- * Python backend API endpoint for Gmail incidents.
- */
-const API_ENDPOINT = 'https://nixon-ungabled-subaggregately.ngrok-free.dev/analyze';
-
-/**
- * Returns the Dify API key from script properties.
- * @returns {string} API key
- */
-function getDifyApiKey() {
-  return PropertiesService.getScriptProperties().getProperty('DIFY_API_KEY');
+function getBackendUrl() {
+  const url = PropertiesService.getScriptProperties().getProperty('BACKEND_URL');
+  
+  if (!url) {
+    throw new Error(
+      "❌ BACKEND_URL not found! \n" +
+      "Please go to: Project Settings (Gear icon) > Script Properties > Add 'BACKEND_URL' with your Ngrok URL."
+    );
+  }
+  
+  const cleanUrl = url.trim();
+  return cleanUrl.endsWith('/') ? cleanUrl.slice(0, -1) : cleanUrl;
 }
 
 /**
- * Returns the Dify workflow endpoint URL from script properties.
- * Falls back to default Dify URL if DIFY_API_URL is not set.
- * @returns {string} API URL
+ * Endpoint used for API calls.
+ * It's a 'function' or 'get' to ensure it always uses the latest Property value.
  */
-function getDifyApiUrl() {
-  const url = PropertiesService.getScriptProperties().getProperty('DIFY_API_URL');
-  return url || DIFY.DEFAULT_WORKFLOW_URL;
+function getApiEndpoint() {
+  return getBackendUrl() + '/analyze';
 }
