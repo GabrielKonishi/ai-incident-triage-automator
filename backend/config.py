@@ -20,9 +20,9 @@ def load_dify_config() -> DifyConfig:
 
     Required:
       - DIFY_API_KEY
-
+      - DIFY_API_URL
+    
     Optional:
-      - DIFY_API_URL (default: https://api.dify.ai/v1/workflows/run)
       - DIFY_USER (default: api-user)
       - DIFY_RESPONSE_MODE (default: blocking)
     """
@@ -34,7 +34,7 @@ def load_dify_config() -> DifyConfig:
 
     return DifyConfig(
         api_key=api_key,
-        workflow_url=os.getenv("DIFY_API_URL", "https://api.dify.ai/v1/workflows/run"),
+        workflow_url=os.getenv("DIFY_API_URL"),
         user=os.getenv("DIFY_USER", "api-user"),
         response_mode=os.getenv("DIFY_RESPONSE_MODE", "blocking"),
     )
